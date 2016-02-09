@@ -1,12 +1,12 @@
 class ChannelDeviceController
   constructor: ({@service}) ->
-    
+
   encryptOptions: (req, res) =>
     config =
       auth: req.meshbluAuth
       options: req.meshbluAuth.device.options
 
-    MailerService.encryptOptions config, (error) =>
+    @service.encryptOptions config, (error) =>
       return res.sendStatus(error.code || 500) if error?
       res.sendStatus 200
 
@@ -16,7 +16,7 @@ class ChannelDeviceController
       encryptedOptions: req.meshbluAuth.device.encryptedOptions
       message: req.body?.payload
 
-    MailerService.processMessage config, (error) =>
+    @service.processMessage config, (error) =>
       return res.sendStatus(error.code || 500) if error?
       res.sendStatus 200
 

@@ -1,0 +1,2 @@
+# mailer-service-http
+HTTP WRAPPER FOR THE MAILER SERVICE

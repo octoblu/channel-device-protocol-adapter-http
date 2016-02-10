@@ -1,7 +1,7 @@
 _             = require 'lodash'
 Server        = require './server'
 
-class ChannelHttpProtocolAdapter
+class DeviceHttpProtocolAdapter
   constructor: ({@service}) ->
     @serverOptions =
       port           : process.env.PORT || 80
@@ -21,4 +21,4 @@ class ChannelHttpProtocolAdapter
       {address,port} = server.address()
       console.log "Server listening on #{address}:#{port}"
 
-module.exports = ChannelHttpProtocolAdapter
+module.exports = DeviceHttpProtocolAdapter

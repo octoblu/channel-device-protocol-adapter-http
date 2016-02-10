@@ -1,8 +1,8 @@
 {
-  "name": "channel-device-protocol-adapter-http",
-  "version": "1.0.3",
+  "name": "device-protocol-adapter-http",
+  "version": "1.0.0",
   "description": "Http wrapper for the mailer service in Meshblu",
-  "main": "channel-http-protocol-adapter.js",
+  "main": "device-protocol-adapter-http.js",
   "dependencies": {
     "body-parser": "^1.14.2",
     "coffee-script": "^1.10.0",
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/octoblu/channel-device-protocol-adapter-http.git"
+    "url": "git+https://github.com/octoblu/device-protocol-adapter-http.git"
   },
   "keywords": [
     "meshblu",
@@ -33,7 +33,7 @@
   "author": "octoblu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/octoblu/channel-device-protocol-adapter-http/issues"
+    "url": "https://github.com/octoblu/device-protocol-adapter-http/issues"
   },
-  "homepage": "https://github.com/octoblu/channel-device-protocol-adapter-http#readme"
+  "homepage": "https://github.com/octoblu/device-protocol-adapter-http#readme"
 }

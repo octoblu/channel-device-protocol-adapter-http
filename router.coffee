@@ -1,12 +1,12 @@
-ChannelDeviceController = require './src/controllers/channel-device-controller'
+DeviceController = require './src/controllers/device-controller'
 
 class Router
   constructor: ({service}, dependencies={}) ->
     console.log {service}
-    @channelDeviceController = new ChannelDeviceController {service}
+    @DeviceController = new DeviceController {service}
 
   route: (app) =>
-    app.post '/message', @channelDeviceController.message
-    app.post '/config', @channelDeviceController.config
+    app.post '/message', @DeviceController.message
+    app.post '/config', @DeviceController.config
 
 module.exports = Router

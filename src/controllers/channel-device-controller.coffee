@@ -1,16 +1,26 @@
 class ChannelDeviceController
   constructor: ({@service}) ->
 
-  getEnvelope: (req) ->
+  getEnvelope: (req) =>
+    message = req.body
+    message = req.body.payload if req.body.payload?
+
     envelope =
       metadata:
         auth: req.meshbluAuth
-      data: req.body?.data
+      message: message.data
+      config: req.meshbluAuth.device
 
     envelope
 
+  getConfigEnvelope: (req) =>
+    envelope =
+      metadata:
+        auth: req.meshbluAuth
+        config: req.body
+
   config: (req, res) =>
-    @service.onConfig req.body, =>
+    @service.onConfig @getConfigEnvelope req, =>
       return res.sendStatus(error.code || 500) if error?
       res.sendStatus 200
 

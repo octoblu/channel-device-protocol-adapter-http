@@ -17,8 +17,6 @@ class DeviceHttpProtocolAdapter
     server = new Server @serverOptions
     server.run (error) =>
       return @panic error if error?
-
       {address,port} = server.address()
-      console.log "Server listening on #{address}:#{port}"
 
 module.exports = DeviceHttpProtocolAdapter

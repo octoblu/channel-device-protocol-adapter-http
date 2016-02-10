@@ -1,6 +1,6 @@
 {
   "name": "device-protocol-adapter-http",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Http wrapper for the mailer service in Meshblu",
   "main": "device-protocol-adapter-http.js",
   "dependencies": {

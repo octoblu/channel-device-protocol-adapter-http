@@ -2,7 +2,6 @@ DeviceController = require './src/controllers/device-controller'
 
 class Router
   constructor: ({service}, dependencies={}) ->
-    console.log {service}
     @DeviceController = new DeviceController {service}
 
   route: (app) =>

@@ -5,7 +5,7 @@ class Router
     @DeviceController = new DeviceController {service}
 
   route: (app) =>
-    app.post '/message', @DeviceController.message
+    app.post '/received', @DeviceController.received
     app.post '/config', @DeviceController.config
 
 module.exports = Router

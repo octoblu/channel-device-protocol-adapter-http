@@ -1,38 +1,61 @@
 debug = require('debug')('meshblu:device-protocol-adapter-http')
+MeshbluHttp = require 'meshblu-http'
 
 class DeviceController
   constructor: ({@service}) ->
 
-  getEnvelope: (req) =>
+  getUserDeviceConfig: (req, callback) =>
+    meshblu = new MeshbluHttp req.meshbluAuth
+    userDeviceUuid = {req.meshbluAuth}
+    userDeviceUuid = _.first req.body.forwardedFor unless _.isEmpty req.body.forwardedFor
+
+    meshblu.device userDeviceUuid, (error, userDevice) =>
+      return callback error if error?
+      callback null, userDevice
+
+  getReceivedEnvelope: (req, callback) =>
     message = req.body
     message = req.body.payload if req.body.payload?
 
-    envelope =
-      metadata:
-        auth: req.meshbluAuth
-      message: message.message
-      config: req.meshbluAuth.device
+    @getUserDeviceConfig req, (error, userDevice) =>
+      return callback error if error?
+      envelope =
+        metadata:
+          auth: req.meshbluAuth
+        message: message.message
+        config: userDevice
 
-    envelope
+      debug 'receivedEnvelope', envelope
+      callback null, envelope
 
   getConfigEnvelope: (req) =>
-    envelope =
-      metadata:
-        auth: req.meshbluAuth
-      config: req.body
+    @getUserDeviceConfig req, (error, userDevice) =>
+      debug 'receivedEnvelope', userDevice
+      return callback error if error?
+      envelope =
+        metadata:
+          auth: req.meshbluAuth
+        config: userDevice
+
+      debug 'configEnvelope', envelope
+      callback null, envelope
 
   config: (req, res) =>
     debug 'config', req.body
-    envelope = @getConfigEnvelope(req)
-    @service.onConfig envelope, =>
+    @getConfigEnvelope req, (error, envelope) =>
       return res.sendStatus(error.code || 500) if error?
-      res.sendStatus 200
+
+      @service.onConfig envelope, =>
+        return res.sendStatus(error.code || 500) if error?
+        res.sendStatus 200
 
   received: (req, res) =>
     debug 'received', req.body
-    envelope = @getEnvelope(req)
-    @service.onMessage envelope, =>
+    envelope = @getReceivedEnvelope req, (error, envelope) =>
       return res.sendStatus(error.code || 500) if error?
-      res.sendStatus 200
+
+      @service.onMessage envelope, =>
+        return res.sendStatus(error.code || 500) if error?
+        res.sendStatus 200
 
 module.exports = DeviceController

@@ -1,12 +1,13 @@
 debug = require('debug')('meshblu:device-protocol-adapter-http')
 MeshbluHttp = require 'meshblu-http'
+_ = require 'lodash'
 
 class DeviceController
   constructor: ({@service}) ->
 
   getUserDeviceConfig: (req, callback) =>
     meshblu = new MeshbluHttp req.meshbluAuth
-    userDeviceUuid = {req.meshbluAuth}
+    userDeviceUuid = req.meshbluAuth.uuid
     userDeviceUuid = _.first req.body.forwardedFor unless _.isEmpty req.body.forwardedFor
 
     meshblu.device userDeviceUuid, (error, userDevice) =>
@@ -28,16 +29,16 @@ class DeviceController
       debug 'receivedEnvelope', envelope
       callback null, envelope
 
-  getConfigEnvelope: (req) =>
+  getConfigEnvelope: (req, callback) =>
     @getUserDeviceConfig req, (error, userDevice) =>
-      debug 'receivedEnvelope', userDevice
+      debug 'userDevice', userDevice
       return callback error if error?
       envelope =
         metadata:
           auth: req.meshbluAuth
         config: userDevice
 
-      debug 'configEnvelope', envelope
+      # debug 'configEnvelope', JSON.stringify envelope,null,2
       callback null, envelope
 
   config: (req, res) =>
@@ -54,7 +55,7 @@ class DeviceController
     envelope = @getReceivedEnvelope req, (error, envelope) =>
       return res.sendStatus(error.code || 500) if error?
 
-      @service.onMessage envelope, =>
+      @service.onReceived envelope, =>
         return res.sendStatus(error.code || 500) if error?
         res.sendStatus 200
 

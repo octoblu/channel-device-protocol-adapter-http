@@ -52,7 +52,7 @@ class DeviceController
 
   received: (req, res) =>
     debug 'received', req.body
-    envelope = @getReceivedEnvelope req, (error, envelope) =>
+    @getReceivedEnvelope req, (error, envelope) =>
       return res.sendStatus(error.code || 500) if error?
 
       @service.onReceived envelope, =>

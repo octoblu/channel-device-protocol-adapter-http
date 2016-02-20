@@ -22,15 +22,16 @@ class ManagementController
 
     auth = new Buffer(req.query.code, 'base64').toString().split(':')
     uuid = auth[1]
-    token = auth[2]    
+    token = auth[2]
 
     console.log({uuid, token})
-    res.cookie 'meshblu_auth_uuid', uuid, maxAge: 120000
-    res.cookie 'meshblu_auth_token', token, maxAge: 120000
+    res.cookie 'meshblu_auth_uuid', uuid
+    res.cookie 'meshblu_auth_token', token
 
     res.redirect '/authorize'
 
   authorize: (req, res) =>
+    console.log cookies: req.cookies
     console.log('omg, I am authenticated')
     console.log req.meshbluAuth
     res.sendFile 'index.html', root: __dirname + '../../../public'

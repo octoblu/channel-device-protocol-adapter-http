@@ -13,8 +13,9 @@ class Router
     app.get '/authenticate', @managementController.authenticate
     app.get '/authenticated', @managementController.authenticated
 
-    #authenticated
     app.use meshbluAuth(@meshbluConfig)
+
+    #authenticated
     app.get '/authorize', @managementController.authorize
     app.post '/received', @deviceController.received
     app.post '/config', @deviceController.config

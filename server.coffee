@@ -3,6 +3,7 @@ morgan             = require 'morgan'
 express            = require 'express'
 bodyParser         = require 'body-parser'
 errorHandler       = require 'errorhandler'
+cookieParser       = require 'cookie-parser'
 meshbluHealthcheck = require 'express-meshblu-healthcheck'
 MeshbluConfig      = require 'meshblu-config'
 Router             = require './router'
@@ -20,6 +21,7 @@ class Server
     app.use morgan 'dev', immediate: false unless @disableLogging
     app.use cors()
     app.use errorHandler()
+    app.use cookieParser()
     app.use bodyParser.urlencoded limit: '1mb', extended : true
     app.use bodyParser.json limit : '1mb'
 

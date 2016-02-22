@@ -36,4 +36,7 @@ class ManagementController
     console.log req.meshbluAuth
     res.sendFile 'index.html', root: __dirname + '../../../public'
 
+  authorized: (req, res) =>
+    throw new Error('Implement authorized plz')
+
 module.exports = ManagementController

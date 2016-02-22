@@ -12,7 +12,7 @@
     "error-handler": "^1.0.0",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
-    "express-meshblu-auth": "^2.0.1",
+    "express-meshblu-auth": "^3.0.0",
     "express-meshblu-healthcheck": "^1.0.1",
     "meshblu-config": "^3.1.1",
     "morgan": "^1.6.1"

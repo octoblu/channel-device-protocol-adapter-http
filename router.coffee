@@ -19,12 +19,14 @@ class Router
 
     console.log @meshbluConfig
     meshbluAuth = MeshbluAuth @meshbluConfig, errorCallback: (error, {req, res}) =>
-      console.log 'unauthorized. redirecting.'
       res.redirect '/octoblu/authenticate'
 
     app.use meshbluAuth
     app.get '/device/authorize', @credentialsController.authorize
-    app.get '/device/authorized', @credentialsController.authorized
+
+    app.get '/device/configured', (req, res) =>
+      res.send('device configured. please check your email to confirm your credentials')
+    # app.get '/device/authorized', @credentialsController.authorized
 
     app.post '/events/received', @deviceController.received
     app.post '/events/config', @deviceController.config
@@ -41,7 +43,6 @@ class Router
       passReqToCallback: true
 
     passport.use new OctobluStrategy octobluStrategyConfig, (req, bearerToken, secret, {uuid}, next) =>
-      console.log "back from passport", {uuid, bearerToken}
       next null, {uuid, bearerToken}
 
     passport.serializeUser (user, done) => done null, user

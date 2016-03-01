@@ -34,4 +34,17 @@ class CredentialsController
   authorized: (req, res) =>
     throw new Error('Implement authorized plz')
 
+  verifyConfiguration: (req, res) =>
+    console.log "Hi. I'm verifying your configuration."
+    configEnvelope =
+      metadata:
+        auth: req.meshbluAuth
+      config: req.body
+
+    console.log {configEnvelope}
+
+    @service.onVerifyConfiguration configEnvelope, (error) =>
+      return res.status(error.code || 500).send error.message if error?
+      res.sendStatus 200
+
 module.exports = CredentialsController

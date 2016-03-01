@@ -13,10 +13,11 @@ class Router
   route: (app) =>
     app.use passport.initialize()
     app.use passport.session()
-    @setupOctobluOauth clientID: '206597a2-0883-4b3b-9b7c-93c3e0c05d62', clientSecret: '1efc628ff1899366622f889610455ce0714bcd96'
+    @setupOctobluOauth clientID: 'oauth-provider-uuid', clientSecret: 'some-random-token'
 
     app.get '/octoblu/authenticate', passport.authenticate('octoblu'), @credentialsController.authenticate
 
+    console.log @meshbluConfig
     meshbluAuth = MeshbluAuth @meshbluConfig, errorCallback: (error, {req, res}) =>
       console.log 'unauthorized. redirecting.'
       res.redirect '/octoblu/authenticate'
@@ -28,14 +29,19 @@ class Router
     app.post '/events/received', @deviceController.received
     app.post '/events/config', @deviceController.config
 
-  setupOctobluOauth: ({clientID, clientSecret}) =>    
+    app.get '/', (req, res) => res.redirect '/device/authorize'
+
+  setupOctobluOauth: ({clientID, clientSecret}) =>
     octobluStrategyConfig =
       clientID: clientID
+      authorizationURL: 'http://oauth.octoblu.dev/authorize'
+      tokenURL: 'http://oauth.octoblu.dev/access_token'
       clientSecret: clientSecret
       callbackURL: 'http://localhost:1337/octoblu/authenticate'
       passReqToCallback: true
 
     passport.use new OctobluStrategy octobluStrategyConfig, (req, bearerToken, secret, {uuid}, next) =>
+      console.log "back from passport", {uuid, bearerToken}
       next null, {uuid, bearerToken}
 
     passport.serializeUser (user, done) => done null, user

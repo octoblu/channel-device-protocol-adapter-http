@@ -15,7 +15,14 @@ class CredentialsController
     console.log cookies: req.cookies
     console.log('omg, I am authenticated')
     console.log req.meshbluAuth
-    res.sendFile 'index.html', root: __dirname + '../../../public'
+    editUrl = url.format
+      host: "device-editor-octoblu.octoblu.dev/#{req.meshbluAuth.uuid}"
+      query:
+        token: req.meshbluAuth.token
+        server: req.meshbluAuth.host
+        port: req.meshbluAuth.port
+
+    res.redirect editUrl
 
   authorized: (req, res) =>
     throw new Error('Implement authorized plz')

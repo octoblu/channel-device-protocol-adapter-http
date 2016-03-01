@@ -27,7 +27,7 @@ class CredentialsController
           token: device.token
           server: req.meshbluAuth.host
           port: req.meshbluAuth.port
-          callbackURL: "http://localhost:1337/device/configured"
+          callbackURL: "http://device-mailer.octoblu.dev/device/configured"
 
       res.redirect editUrl
 
